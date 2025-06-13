@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+fpdf
+num2words
+motor           # async MongoDB driver (assuming async use with invoice_collection)
+pymongo
+bson
+python-multipart
