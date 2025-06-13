@@ -906,6 +906,7 @@ export default {
           Particulars: "",
         },
       ],
+      avoidTotalCalculation: false,
       loading: false,
       message: null,
       messageType: 'success',
