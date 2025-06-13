@@ -182,7 +182,7 @@ async def generate_invoice(invoice: InvoiceRequest):
         pdf.set_xy(120, y_position)
         pdf.multi_cell(60, 3, txt=entry.Particulars, border=0)
         y_position += 1.5
-        pdf.set_xy(192, y_position)
+        pdf.set_xy(190, y_position)
         pdf.cell(ln=0, align='C', w=1, txt=f"{entry.Amount}.00", border=0)
         y_position += 10
         total_amount += entry.Amount
