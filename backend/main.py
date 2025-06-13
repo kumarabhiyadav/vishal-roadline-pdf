@@ -5,8 +5,8 @@ from fpdf import FPDF
 from num2words import num2words
 from fastapi.responses import FileResponse
 import os
-from schemas import InvoiceSchema
-from db import invoice_collection
+from backend.schemas import InvoiceSchema
+from backend.db import invoice_collection
 from bson import ObjectId
 from pymongo import DESCENDING, ASCENDING
 from datetime import datetime
@@ -48,10 +48,6 @@ class InvoiceRequest(BaseModel):
 @app.post("/generate-invoice")
 async def generate_invoice(invoice: InvoiceRequest):
 
-    existing = await invoice_collection.find_one({"metadata.BillNumber": invoice.metadata.BillNumber})
-    if existing:
-        raise HTTPException(status_code=400, detail=f"BillNumber {invoice.metadata.BillNumber} already exists.")
-    
     pdf = FPDF()
     pdf.add_page()
     fontfamily = "helvetica"
@@ -172,7 +168,7 @@ async def generate_invoice(invoice: InvoiceRequest):
     y_position = 90
     total_amount = 0
     for entry in invoice.entries:
-        pdf.set_xy(20, y_position)
+        pdf.set_xy(22, y_position)
         pdf.cell(ln=0, align='C', w=1, txt=entry.TruckNo, border=0)
         pdf.set_xy(44, y_position)
         pdf.cell(ln=0, align='C', w=1, txt=entry.LRNo, border=0)
@@ -182,8 +178,10 @@ async def generate_invoice(invoice: InvoiceRequest):
         pdf.cell(ln=0, align='C', w=1, txt=str(entry.Quantity), border=0)
         pdf.set_xy(111, y_position)
         pdf.cell(ln=0, align='C', w=1, txt=str(entry.Detention), border=0)
+        y_position -= 1.5
         pdf.set_xy(120, y_position)
         pdf.multi_cell(60, 3, txt=entry.Particulars, border=0)
+        y_position += 1.5
         pdf.set_xy(192, y_position)
         pdf.cell(ln=0, align='C', w=1, txt=f"{entry.Amount}.00", border=0)
         y_position += 10
@@ -208,8 +206,12 @@ async def generate_invoice(invoice: InvoiceRequest):
     invoice_data = invoice.model_dump()
     invoice_data["createdAt"] = datetime.utcnow()
     invoice_data["updatedAt"] = datetime.utcnow()
-
-    result = await invoice_collection.insert_one(invoice_data)
+    
+    existing = await invoice_collection.find_one({"metadata.BillNumber": invoice.metadata.BillNumber})
+    print('Invoice already exists:', existing)
+    if not existing:
+        print('Inserting new invoice')
+        result = await invoice_collection.insert_one(invoice_data)
 
     return FileResponse(path=filepath, filename=filename, media_type='application/pdf')
 
@@ -298,3 +300,6 @@ async def delete_invoice(invoice_id: str):
     except Exception as e:
         # Handle invalid ObjectId format or other errors
         raise HTTPException(status_code=400, detail=str(e))
+    
+
+    
