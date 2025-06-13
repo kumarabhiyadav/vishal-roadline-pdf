@@ -124,7 +124,7 @@ async def generate_invoice(invoice: InvoiceRequest):
     pdf.set_text_color(0, 0, 0)
     pdf.cell(ln=0, align='C', w=1, txt='Bearing cost of Transporting Your products in our Tanker as under:', border=0)
 
-    pdf.line(10,32,200,32)
+    
     pdf.set_xy(105.0, 34)
     pdf.cell(ln=0,  align='C', w=1,txt='Address : Ajaykumar Yadav, Kajuwadi, Opp. Shivsena Shakha, Wagle Estate, Thane (W) - 400604,',border=0)
     pdf.set_xy(105.0, 37)
