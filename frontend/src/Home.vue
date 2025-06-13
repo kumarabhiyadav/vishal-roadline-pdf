@@ -43,7 +43,7 @@
                 />
               </div>
               <div class="form-group">
-                <label for="source">Source Location</label>
+                <label for="source">Source </label>
                 <input 
                   id="source"
                   v-model="metadata.Source" 
@@ -54,7 +54,7 @@
                 />
               </div>
               <div class="form-group">
-                <label for="destination">Destination Location</label>
+                <label for="destination">Destination</label>
                 <input 
                   id="destination"
                   v-model="metadata.Destination" 

@@ -172,10 +172,10 @@ async def generate_invoice(invoice: InvoiceRequest):
         pdf.cell(ln=0, align='C', w=1, txt=entry.TruckNo, border=0)
         pdf.set_xy(44, y_position)
         pdf.cell(ln=0, align='C', w=1, txt=entry.LRNo, border=0)
-        pdf.set_xy(68, y_position)
+        pdf.set_xy(70, y_position)
         pdf.cell(ln=0, align='C', w=1, txt=entry.Date, border=0)
         pdf.set_xy(90, y_position)
-        pdf.cell(ln=0, align='C', w=1, txt=str(entry.Quantity), border=0)
+        pdf.cell(ln=0, align='C', w=1, txt=str(entry.Quantity)+ 'KG', border=0)
         pdf.set_xy(111, y_position)
         pdf.cell(ln=0, align='C', w=1, txt=str(entry.Detention), border=0)
         y_position -= 1.5
